@@ -1,0 +1,42 @@
+---
+title: "Linear Programming Problems"
+output: html_notebook
+---
+```{r Setup}
+library(lpSolve)
+```
+
+# Example of Linear Programming using `lpSolve`.
+```{r}
+# Set coefficients of decision var for obj. Func.
+C <- c(30,40,80)
+
+# Create constraintc coefficient Matrix B. (LHS)
+A <- matrix(c(1,1,-10,
+              4,3,-20,
+              1,0,-2,
+              1,1,0), nrow = 4, byrow = TRUE)
+
+# Set constraints RHS.
+B <- c(500,200,100,1000)
+
+# Set constraint directions.
+constraint_directions <- c("<=", "<=", "<=", ">=")
+
+# Find optimal
+optimum <- lp(direction = "min",
+              objective.in = C,
+              const.mat = A,
+              const.dir = constraint_directions,
+              const.rhs = B,
+              all.int = T)
+# O == Success!, 2 == No feasible Sol.
+optimum$status
+
+# Display optimum values for x_3, x_2, x_1.
+best_sol <- optimum$solution
+# x_3, x_2, x_1.
+best_sol
+
+paste0("Objective Value: ", optimum$objval)
+```
